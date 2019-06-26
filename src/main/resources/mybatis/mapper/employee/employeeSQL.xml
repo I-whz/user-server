@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="employee">
+	<resultMap type="employee" id="employeeResult">
+		<result property="id" 				column="id"/>
+		<result property="name" 			column="name"/>
+		<result property="username" 		column="username"/>
+		<result property="password" 		column="password"/>
+		<result property="email" 			column="email"/>
+		<result property="status" 			column="status"/>
+		<result property="address" 			column="address"/>
+		<result property="zipCode" 			column="zip_code"/>
+		<result property="authType" 		column="auth_type"/>
+		<result property="createTime" 		column="create_time"/>
+		<result property="updateTime" 		column="update_time"/>
+	</resultMap>
+	
+	<select id="queryByUserName" parameterType="java.lang.String" resultMap="employeeResult">
+		<![CDATA[
+			SELECT
+			  `id`,
+			  `name`,
+			  `username`,
+			  `password`,
+			  `email`,
+			  `status`,
+			  `address`,
+			  `zip_code`,
+			  `auth_type`,
+			  `create_time`,
+			  `update_time`
+			FROM `employee` WHERE `username` = #{username}
+		]]>
+	</select>
+	
+	<insert id="insert" parameterType="employee">
+		<![CDATA[
+			INSERT INTO `employee`
+            (
+             `name`,
+             `username`,
+             `password`,
+             `email`,
+             `status`,
+             `address`,
+             `zip_code`,
+             `auth_type`,
+             `create_time`)
+			VALUES (#{name},
+			        #{username},
+			        #{password},
+			        #{email},
+			        #{status},
+			        #{address},
+			        #{zipCode},
+			        #{authType},
+			        #{createTime})
+		]]>
+	</insert>
+	
+	<update id="update" parameterType="employee">
+		<![CDATA[
+			UPDATE `employee`
+			SET 
+			  `name` = #{name},
+			  `password` = #{password},
+			  `email` = #{email},
+			  `status` = #{status},
+			  `address` = #{address},
+			  `zip_code` = #{zipCode},
+			  `auth_type` = #{authType},
+			  `update_time` = #{updateTime}
+			WHERE `id` = #{id}
+		]]>
+	</update>
+</mapper>  

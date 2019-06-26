@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="false"/>
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<setting name="logImpl" value="LOG4J2"/>
+	</settings>
+	<typeAliases>
+		<typeAlias alias="ou" type="com.bugbycode.module.organization.Organization"/>
+		<typeAlias alias="employee" type="com.bugbycode.module.employee.Employee"/>
+		<typeAlias alias="role" type="com.bugbycode.module.role.Role"/>
+	</typeAliases>
+</configuration>
