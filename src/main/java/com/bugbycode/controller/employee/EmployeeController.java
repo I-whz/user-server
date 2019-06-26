@@ -85,13 +85,19 @@ public class EmployeeController {
 		Map<String,Object> result = new HashMap<String,Object>();
 		int code = 0;
 		String message = "修改用户成功";
-		
+		String password = emp.getPassword();
 		Employee e = employeeService.queryByUserName(username);
 		if(e == null) {
 			code = 1;
 			message = "修改用户失败";
 		}else {
 			emp.setId(e.getId());
+			if(StringUtil.isNotEmpty(password)) {
+				password = AESUtil.encrypt(password);
+				emp.setPassword(password);
+			}else {
+				emp.setPassword(e.getPassword());
+			}
 		}
 		employeeService.update(emp);
 		result.put("code", code);
