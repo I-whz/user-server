@@ -1,6 +1,10 @@
 server:
   port: 9998
+  servlet:
+    context-path: /user-server
 spring:
+  freemarker:
+    checkTemplateLocation: false
   mvc:
     servlet:
       load-on-startup: 1
