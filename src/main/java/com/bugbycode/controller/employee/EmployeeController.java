@@ -2,6 +2,7 @@ package com.bugbycode.controller.employee;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.websocket.server.PathParam;
@@ -117,5 +118,11 @@ public class EmployeeController {
 			return null;
 		}
 		return employeeService.queryByUserName(username);
+	}
+	
+	@RequestMapping(method = {RequestMethod.GET},value = "/query")
+	public List<Employee> query(int organizationId,String keyWord,
+			int startRow,int limit){
+		return null;
 	}
 }
