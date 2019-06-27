@@ -97,6 +97,7 @@ public class EmployeeController {
 			message = "修改用户失败";
 		}else {
 			emp.setId(e.getId());
+			emp.setStatus(e.getStatus());
 			if(StringUtil.isNotEmpty(password)) {
 				password = AESUtil.encrypt(password);
 				emp.setPassword(password);
