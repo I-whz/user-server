@@ -4,14 +4,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.websocket.server.PathParam;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bugbycode.module.employee.Employee;
 import com.bugbycode.service.employee.EmployeeService;
 import com.util.AESUtil;
@@ -105,8 +110,11 @@ public class EmployeeController {
 		return result;
 	}
 	
-	@RequestMapping(method = {RequestMethod.GET},value = "/queryByUserName")
-	public Employee queryByUserName(@RequestParam(required = true) String username) {
+	@RequestMapping(method = {RequestMethod.GET},value = "/queryByUserName/{username}")
+	public Employee queryByUserName(@PathVariable(name = "username") String username) {
+		if(StringUtil.isEmpty(username)) {
+			return null;
+		}
 		return employeeService.queryByUserName(username);
 	}
 }
