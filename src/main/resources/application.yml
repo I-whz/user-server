@@ -12,7 +12,7 @@ spring:
     oauth:
       clientId: fort
       clientSecret: j1d1sec.c0m
-      checkTokenUrl: http://localhost:9999/oauth/check_token
+      checkTokenUrl: http://localhost:9999/user-oauth2/oauth/check_token
     server:
       datasource:
         url: jdbc:mysql://dev.server:3306/new_fort?useUnicode=true&characterEncoding=UTF-8&useSSL=false&autoReconnect=true
