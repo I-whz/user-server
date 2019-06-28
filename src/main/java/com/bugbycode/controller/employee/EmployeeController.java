@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +26,7 @@ import com.bugbycode.service.employee.EmployeeService;
 import com.util.AESUtil;
 import com.util.StringUtil;
 
+@Validated
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
@@ -93,10 +99,17 @@ public class EmployeeController {
 		}
 		return employeeService.queryByUserName(username);
 	}
-	
+
 	@RequestMapping(method = {RequestMethod.GET},value = "/query")
-	public List<Employee> query(int organizationId,String keyWord,
-			int startRow,int limit){
+	public List<Employee> query(
+			@Min(value = 1 ,message = "组织机构ID必须大于0")
+			@Max(value = Integer.MAX_VALUE,message = ("组织机构ID不能超过" + Integer.MAX_VALUE))
+			//@Pattern(regexp = "^[0-9]+$",message="组织机构ID必须是数字")
+			int organizationId,
+			@NotNull(message = "模糊查询条件不能为NULL")
+			String keyWord,
+			int offset,
+			int limit){
 		return null;
 	}
 }
