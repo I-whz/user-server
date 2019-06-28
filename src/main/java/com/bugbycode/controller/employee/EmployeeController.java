@@ -5,19 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.alibaba.fastjson.JSONObject;
 import com.bugbycode.module.employee.Employee;
 import com.bugbycode.service.employee.EmployeeService;
 import com.util.AESUtil;
@@ -31,51 +29,28 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	
 	@RequestMapping(method = {RequestMethod.POST},value = "/insert")
-	public Map<String, ?> insert(@RequestBody Employee emp){
+	public Map<String, ?> insert(@RequestBody @Validated Employee emp){
 		Map<String,Object> result = new HashMap<String,Object>();
-		int code = 0;
-		String message = "新建用户成功";
+		String error = "success";
+		String error_description = "新建用户成功";
 		String username = emp.getUsername();
 		String password = emp.getPassword();
-		String name = emp.getName();
-		int status = emp.getStatus();
-		String address = emp.getAddress();
-		String zipCode = emp.getZipCode();
-		int authType = emp.getAuthType();
-		try {
-			if(StringUtil.isBlank(name)) {
-				throw new RuntimeException("请输入姓名");
-			}
-			if(StringUtil.isBlank(username)) {
-				throw new RuntimeException("请输入用户名");
-			}
-			if(StringUtil.isEmpty(password)) {
-				throw new RuntimeException("请输入密码");
-			}
-			
+		if(StringUtil.isNotEmpty(password)) {
 			emp.setPassword(AESUtil.encrypt(password));
-			
-			if(!(status == 0 || status == 1)) {
-				throw new RuntimeException("用户状态错误");
-			}
-			
-			Employee e = employeeService.queryByUserName(username);
-			if(e != null) {
-				throw new RuntimeException("该用户名已存在");
-			}
-			
-			emp.setCreateTime(new Date());
-			
-			int row = employeeService.insert(emp);
-			if(row > 0) {
-				result.put("empId", emp.getId());
-			}
-		}catch (Exception e) {
-			code = 1;
-			message = e.getMessage();
 		}
-		result.put("code", code);
-		result.put("message", message);
+		Employee e = employeeService.queryByUserName(username);
+		if(e != null) {
+			throw new AccessDeniedException("添加用户失败，该用户名已存在");
+		}
+		
+		emp.setCreateTime(new Date());
+		
+		int row = employeeService.insert(emp);
+		if(row > 0) {
+			result.put("empId", emp.getId());
+		}
+		result.put("error", error);
+		result.put("error_description", error_description);
 		return result;
 	}
 	
@@ -89,13 +64,12 @@ public class EmployeeController {
 	public Map<String,?> update(@RequestBody Employee emp){
 		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Map<String,Object> result = new HashMap<String,Object>();
-		int code = 0;
-		String message = "修改用户成功";
+		String error = "success";
+		String error_description = "修改用户成功";
 		String password = emp.getPassword();
 		Employee e = employeeService.queryByUserName(username);
 		if(e == null) {
-			code = 1;
-			message = "修改用户失败";
+			throw new AccessDeniedException("修改用户失败");
 		}else {
 			emp.setId(e.getId());
 			emp.setStatus(e.getStatus());
@@ -107,8 +81,8 @@ public class EmployeeController {
 			}
 		}
 		employeeService.update(emp);
-		result.put("code", code);
-		result.put("message", message);
+		result.put("error", error);
+		result.put("error_description", error_description);
 		return result;
 	}
 	

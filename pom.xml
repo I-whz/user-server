@@ -95,12 +95,6 @@
 			<artifactId>user-commons</artifactId>
 			<version> 0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-validator/commons-validator -->
-		<dependency>
-		    <groupId>commons-validator</groupId>
-		    <artifactId>commons-validator</artifactId>
-		    <version>1.6</version>
-		</dependency>
 	</dependencies>
 	<build>
 		<finalName>user-server</finalName>
