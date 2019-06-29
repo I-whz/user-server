@@ -1,5 +1,8 @@
 package com.bugbycode.dao.employee.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.bugbycode.dao.base.BaseDao;
@@ -22,6 +25,16 @@ public class EmployeeDaoImpl extends BaseDao implements EmployeeDao {
 	@Override
 	public void update(Employee emp) {
 		getSqlSession().update("employee.update", emp);
+	}
+
+	@Override
+	public List<Employee> query(Map<String, Object> params) {
+		return getSqlSession().selectList("employee.query", params);
+	}
+
+	@Override
+	public int count(Map<String, Object> params) {
+		return getSqlSession().selectOne("employee.count", params);
 	}
 
 }

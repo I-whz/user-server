@@ -15,7 +15,6 @@ import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -98,7 +97,7 @@ public class EmployeeController {
 	public Employee queryByUserName(
 			@NotEmpty(message="用户名不能为空")
 			@Size(min=2,max=20,message="用户名长度不能少于两个字符且不能超过二十个字符")
-			@Pattern(regexp="^[A-Za-z0-9\\u4e00-\\u9fa5]*$",message="用户名必须由大小写字母、数字、下划线以及横杠自由组合")
+			@Pattern(regexp="^[A-Za-z0-9\\u4e00-\\u9fa5]*$",message="用户名不能包含除大小写字母、数字、下划线以及横杠以外的字符")
 			@PathVariable(name = "username") 
 			String username) {
 		if(StringUtil.isEmpty(username)) {
@@ -111,12 +110,33 @@ public class EmployeeController {
 	public List<Employee> query(
 			@Min(value = 1 ,message = "组织机构ID必须大于0")
 			@Max(value = Integer.MAX_VALUE,message = ("组织机构ID不能超过" + Integer.MAX_VALUE))
-			//@Pattern(regexp = "^[0-9]+$",message="组织机构ID必须是数字")
 			int organizationId,
-			@NotNull(message = "模糊查询条件不能为NULL")
 			String keyWord,
 			int offset,
 			int limit){
-		return null;
+		Map<String,Object> params = new HashMap<String,Object>();
+		if(StringUtil.isNotEmpty(keyWord)) {
+			params.put("keyword", keyWord);
+		}
+		params.put("organizationId", organizationId);
+		params.put("offset", offset);
+		params.put("limit", limit);
+		return employeeService.query(params);
+	}
+	
+	@RequestMapping(method = {RequestMethod.GET},value = "/count")
+	public Map<String,Integer> count(
+			@Min(value = 1 ,message = "组织机构ID必须大于0")
+			@Max(value = Integer.MAX_VALUE,message = ("组织机构ID不能超过" + Integer.MAX_VALUE))
+			int organizationId,
+			String keyWord){
+		Map<String,Integer> result = new HashMap<String,Integer>();
+		Map<String,Object> params = new HashMap<String,Object>();
+		if(StringUtil.isNotEmpty(keyWord)) {
+			params.put("keyword", keyWord);
+		}
+		params.put("organizationId", organizationId);
+		result.put("count", employeeService.count(params));
+		return result;
 	}
 }

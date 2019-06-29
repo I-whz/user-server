@@ -14,4 +14,6 @@ public interface EmployeeService {
 	public void update(Employee emp);
 	
 	public List<Employee> query(Map<String,Object> params);
+	
+	public int count(Map<String,Object> params);
 }

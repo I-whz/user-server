@@ -33,7 +33,12 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public List<Employee> query(Map<String, Object> params) {
-		return null;
+		return employeeDao.query(params);
+	}
+
+	@Override
+	public int count(Map<String, Object> params) {
+		return employeeDao.count(params);
 	}
 
 }

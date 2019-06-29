@@ -1,5 +1,8 @@
 package com.bugbycode.dao.employee;
 
+import java.util.List;
+import java.util.Map;
+
 import com.bugbycode.module.employee.Employee;
 
 public interface EmployeeDao {
@@ -9,4 +12,8 @@ public interface EmployeeDao {
 	public int insert(Employee emp);
 
 	public void update(Employee emp);
+	
+	public List<Employee> query(Map<String,Object> params);
+	
+	public int count(Map<String,Object> params);
 }

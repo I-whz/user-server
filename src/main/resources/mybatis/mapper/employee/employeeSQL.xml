@@ -75,4 +75,74 @@
 			WHERE `id` = #{id}
 		]]>
 	</update>
+	
+	<select id="query" parameterType="java.util.HashMap" resultMap="employeeResult">
+		<![CDATA[
+			SELECT
+			  e.`id`,
+			  e.`name`,
+			  e.`username`,
+			  e.`password`,
+			  e.`email`,
+			  e.`status`,
+			  e.`address`,
+			  e.`zip_code`,
+			  e.`auth_type`,
+			  e.`create_time`,
+			  e.`update_time`
+			FROM `employee` e,`rel_employee_organization_role` reo 
+			
+			WHERE e.`id` = reo.`emp_id` 
+		]]>
+		<if test="organizationId!=null and organizationId!=''">
+			<![CDATA[
+				AND reo.`ou_id` = #{organizationId}
+			]]>
+		</if>
+		<if test="keyword!=null and keyword!=''">
+			<![CDATA[
+				AND (e.`name` LIKE CONCAT('%',#{keyword},'%')
+					OR e.`username` LIKE CONCAT('%',#{keyword},'%')
+					OR e.`email` LIKE CONCAT('%',#{keyword},'%')
+				)
+			]]>
+		</if>
+		<if test="offset!=null and offset!=''">
+			<![CDATA[
+				LIMIT #{offset},#{limit}
+			]]>
+		</if>
+	</select>
+	<select id="count" parameterType="java.util.HashMap" resultType="int">
+		<![CDATA[
+			SELECT
+			  e.`id`,
+			  e.`name`,
+			  e.`username`,
+			  e.`password`,
+			  e.`email`,
+			  e.`status`,
+			  e.`address`,
+			  e.`zip_code`,
+			  e.`auth_type`,
+			  e.`create_time`,
+			  e.`update_time`
+			FROM `employee` e,`rel_employee_organization_role` reo 
+			
+			WHERE e.`id` = reo.`emp_id` 
+		]]>
+		<if test="organizationId!=null and organizationId!=''">
+			<![CDATA[
+				AND reo.`ou_id` = #{organizationId}
+			]]>
+		</if>
+		<if test="keyword!=null and keyword!=''">
+			<![CDATA[
+				AND (e.`name` LIKE CONCAT('%',#{keyword},'%')
+					OR e.`username` LIKE CONCAT('%',#{keyword},'%')
+					OR e.`email` LIKE CONCAT('%',#{keyword},'%')
+				)
+			]]>
+		</if>
+	</select>
 </mapper>  
