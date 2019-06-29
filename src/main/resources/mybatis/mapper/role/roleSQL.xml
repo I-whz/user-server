@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="role">
+	<resultMap type="role" id="roleResult">
+		<result property="id" 					column="id"/>
+		<result property="name" 				column="name"/>
+		<result property="description" 			column="description"/>
+		<result property="grantedAuthority" 	column="granted_authority"/>
+		<result property="type" 				column="type"/>
+		<result property="organizationId" 		column="organization_id"/>
+		<result property="createTime" 			column="create_time"/>
+		<result property="updateTime" 			column="update_time"/>
+	</resultMap>
+	<select id="queryOuRole" parameterType="java.util.HashMap" resultMap="roleResult">
+		<![CDATA[
+			SELECT
+			  r.`id`,
+			  r.`name`,
+			  r.`description`,
+			  r.`granted_authority`,
+			  r.`type`,
+			  r.`organization_id`,
+			  r.`create_time`,
+			  r.`update_time`
+			FROM `role` r,`rel_employee_organization_role` reor 
+			
+			WHERE r.`id` = reor.`role_id` AND reor.`emp_id` = #{empId} AND reor.`ou_id` = #{organizationId}
+		]]>
+	</select>
+</mapper>

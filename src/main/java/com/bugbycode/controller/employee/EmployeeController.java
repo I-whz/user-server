@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bugbycode.module.employee.Employee;
 import com.bugbycode.service.employee.EmployeeService;
+import com.bugbycode.service.role.RoleService;
 import com.util.AESUtil;
 import com.util.StringUtil;
 
@@ -34,6 +35,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private EmployeeService employeeService;
+	
+	@Autowired
+	private RoleService roleService;
 	
 	@RequestMapping(method = {RequestMethod.POST},value = "/insert")
 	public Map<String, ?> insert(@RequestBody @Validated Employee emp){
@@ -114,6 +118,7 @@ public class EmployeeController {
 			String keyWord,
 			int offset,
 			int limit){
+		roleService.checkRole(organizationId, "ROLE_USER_QUERY");
 		Map<String,Object> params = new HashMap<String,Object>();
 		if(StringUtil.isNotEmpty(keyWord)) {
 			params.put("keyword", keyWord);
@@ -130,6 +135,7 @@ public class EmployeeController {
 			@Max(value = Integer.MAX_VALUE,message = ("组织机构ID不能超过" + Integer.MAX_VALUE))
 			int organizationId,
 			String keyWord){
+		roleService.checkRole(organizationId, "ROLE_USER_QUERY");
 		Map<String,Integer> result = new HashMap<String,Integer>();
 		Map<String,Object> params = new HashMap<String,Object>();
 		if(StringUtil.isNotEmpty(keyWord)) {
