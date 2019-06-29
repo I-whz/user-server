@@ -1,12 +1,16 @@
 package com.bugbycode.controller.validation;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import javax.validation.Path;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,18 +41,34 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
 				errObj.put("defaultMessage", objErr.getString("defaultMessage"));
 				errArr.add(errObj);
 			}
-			errJson.put("code", "1");
-			errJson.put("errors", errArr);
+			errJson.put("error", "validator_error");
+			errJson.put("error_description", errArr);
 		}else {
 			errJson.put("error", "server_error");
-			errJson.put("error_description", ex.getMessage());
+			errJson.put("error_description", "服务器内部错误");
 		}
 		return new ResponseEntity<Object>(errJson, status);
     }
 	
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<Object> handleValidException(ConstraintViolationException ex) {
-		ex.getConstraintViolations();
-		return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+		JSONObject errJson = new JSONObject();
+		Set<ConstraintViolation<?>> set = ex.getConstraintViolations();
+		JSONArray errArr = new JSONArray();
+		for(ConstraintViolation<?> cv : set) {
+			JSONObject errObj = new JSONObject();
+			String property = cv.getPropertyPath().toString();
+			int index = property.indexOf('.');
+			if(index != -1) {
+				index++;
+				property = property.substring(index);
+			}
+			errObj.put("field", property);
+			errObj.put("defaultMessage", cv.getMessageTemplate());
+			errArr.add(errObj);
+		}
+		errJson.put("error", "validator_error");
+		errJson.put("error_description", errArr);
+		return new ResponseEntity<>(errJson, HttpStatus.BAD_REQUEST);
 	}
 }

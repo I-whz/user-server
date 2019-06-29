@@ -7,8 +7,10 @@ import java.util.Map;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
@@ -67,7 +69,7 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(method = {RequestMethod.POST},value = "/update")
-	public Map<String,?> update(@RequestBody Employee emp){
+	public Map<String,?> update(@Validated @RequestBody Employee emp){
 		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		Map<String,Object> result = new HashMap<String,Object>();
 		String error = "success";
@@ -93,7 +95,12 @@ public class EmployeeController {
 	}
 	
 	@RequestMapping(method = {RequestMethod.GET},value = "/queryByUserName/{username}")
-	public Employee queryByUserName(@PathVariable(name = "username") String username) {
+	public Employee queryByUserName(
+			@NotEmpty(message="用户名不能为空")
+			@Size(min=2,max=20,message="用户名长度不能少于两个字符且不能超过二十个字符")
+			@Pattern(regexp="^[A-Za-z0-9\\u4e00-\\u9fa5]*$",message="用户名必须由大小写字母、数字、下划线以及横杠自由组合")
+			@PathVariable(name = "username") 
+			String username) {
 		if(StringUtil.isEmpty(username)) {
 			return null;
 		}
