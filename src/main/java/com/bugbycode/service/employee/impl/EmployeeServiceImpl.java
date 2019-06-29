@@ -1,5 +1,6 @@
 package com.bugbycode.service.employee.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -23,11 +24,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 	@Override
 	public int insert(Employee emp) {
+		emp.setCreateTime(new Date());
 		return employeeDao.insert(emp);
 	}
 
 	@Override
 	public void update(Employee emp) {
+		emp.setUpdateTime(new Date());
 		employeeDao.update(emp);
 	}
 

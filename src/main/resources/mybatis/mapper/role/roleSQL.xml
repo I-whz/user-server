@@ -29,4 +29,26 @@
 			WHERE r.`id` = reor.`role_id` AND reor.`emp_id` = #{empId} AND reor.`ou_id` = #{organizationId}
 		]]>
 	</select>
+	<insert id="insertOuRel" parameterType="java.util.HashMap">
+		<![CDATA[
+			INSERT INTO `rel_employee_organization_role`
+            (`emp_id`,
+             `ou_id`,
+             `role_id`)
+			VALUES (#{empId},
+			        #{ouId},
+			        #{roleId})
+		]]>
+	</insert>
+	<delete id="exitOu" parameterType="java.util.HashMap">
+		<![CDATA[
+			DELETE FROM `rel_employee_organization_role` 
+			WHERE `emp_id` = #{empId} AND `ou_id` = #{ouId}
+		]]>
+	</delete>
+	<delete id="deleteOuRelByRole" parameterType="int">
+		<![CDATA[
+			DELETE FROM `rel_employee_organization_role` WHERE `role_id` = #{roleId}
+		]]>
+	</delete>
 </mapper>

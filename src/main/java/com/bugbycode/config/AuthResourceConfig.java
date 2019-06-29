@@ -31,7 +31,8 @@ public class AuthResourceConfig extends ResourceServerConfigurerAdapter {
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
-		.antMatchers("/employee/update","/employee/info").hasRole("LOGIN")
+		.antMatchers("/employee/update","/employee/info",
+				"/organization/insert","/organization/query").hasRole("LOGIN")
 		.antMatchers("/employee/query","/employee/count").hasRole("USER_QUERY")
 		.antMatchers("/employee/insert","/employee/queryByUserName").hasRole("CALL_API");
 	}
