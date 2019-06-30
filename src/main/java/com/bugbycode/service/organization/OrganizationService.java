@@ -18,4 +18,7 @@ public interface OrganizationService {
 	public List<Organization> query(Map<String,Object> prarams);
 	
 	public int count(Map<String,Object> params);
+	
+	public Organization queryByName(Map<String,Object> params);
+	
 }

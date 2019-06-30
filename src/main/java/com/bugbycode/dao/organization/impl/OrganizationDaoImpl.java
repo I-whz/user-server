@@ -42,4 +42,9 @@ public class OrganizationDaoImpl extends BaseDao implements OrganizationDao {
 		return getSqlSession().selectOne("ou.count", params);
 	}
 
+	@Override
+	public Organization queryByName(Map<String, Object> params) {
+		return getSqlSession().selectOne("ou.queryByName", params);
+	}
+
 }

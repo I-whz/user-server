@@ -91,4 +91,17 @@
 			)
 		</if>
 	</select>
+	<select id="queryByName" parameterType="java.util.HashMap" resultMap="ouResult">
+		<![CDATA[
+			SELECT
+			  ou.`id`,
+			  ou.`name`,
+			  ou.`description`,
+			  ou.`create_user_id`,
+			  ou.`create_time`,
+			  ou.`update_time`
+			FROM `organization` ou
+			WHERE ou.`create_user_id` = #{empId} AND ou.`name` = #{name} LIMIT 1
+		]]>
+	</select>
 </mapper>

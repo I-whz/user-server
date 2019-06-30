@@ -76,4 +76,9 @@ public class OrganizationServiceImpl implements OrganizationService{
 		return organizationDao.count(params);
 	}
 
+	@Override
+	public Organization queryByName(Map<String, Object> params) {
+		return organizationDao.queryByName(params);
+	}
+
 }

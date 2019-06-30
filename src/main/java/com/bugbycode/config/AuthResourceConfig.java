@@ -36,7 +36,9 @@ public class AuthResourceConfig extends ResourceServerConfigurerAdapter {
 				"/employee/queryByUserName/*",
 				"/organization/insert","/organization/query",
 				"/organization/count","/organization/update",
-				"/organization/delete","/role/query",
+				"/organization/delete","/organization/queryById",
+				"/organization/queryById/*","/organization/queryByName",
+				"/organization/queryByName/*","/role/query",
 				"/role/insert","/role/count",
 				"/role/update","/role/delete","/role/queryById","/role/queryById/*",
 				"/role/queryByName").hasRole("LOGIN")

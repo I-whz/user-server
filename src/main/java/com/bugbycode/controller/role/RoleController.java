@@ -100,6 +100,14 @@ public class RoleController {
 			throw new AccessDeniedException("无权执行该操作");
 		}
 		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("roleName", role.getName());
+		params.put("organizationId", role.getOrganizationId());
+		Role roleTmp = roleService.queryByName(params);
+		if(roleTmp != null) {
+			throw new AccessDeniedException("该角色名称已存在");
+		}
+		
 		int row = roleService.insert(role);
 		
 		if(row > 0) {
@@ -125,6 +133,14 @@ public class RoleController {
 		Organization ou = organizationService.queryById(role.getOrganizationId());
 		if(ou == null || ou.getCreateUserId() != emp.getId()) {
 			throw new AccessDeniedException("无权执行该操作");
+		}
+		
+		Map<String,Object> params = new HashMap<String,Object>();
+		params.put("roleName", role.getName());
+		params.put("organizationId", role.getOrganizationId());
+		Role roleTmp = roleService.queryByName(params);
+		if(!(roleTmp == null || roleTmp.getId() == role.getId())) {
+			throw new AccessDeniedException("该角色名称已存在");
 		}
 		
 		roleService.update(role);
