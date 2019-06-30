@@ -32,10 +32,11 @@ public class AuthResourceConfig extends ResourceServerConfigurerAdapter {
 	public void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 		.antMatchers("/employee/update","/employee/info",
+				"/employee/query","/employee/count",
 				"/organization/insert","/organization/query",
 				"/organization/count","/organization/update",
 				"/organization/delete").hasRole("LOGIN")
-		.antMatchers("/employee/query","/employee/count").hasRole("USER_QUERY")
+		
 		.antMatchers("/employee/insert","/employee/queryByUserName").hasRole("CALL_API");
 	}
 	

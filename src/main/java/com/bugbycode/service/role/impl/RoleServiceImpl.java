@@ -2,6 +2,7 @@ package com.bugbycode.service.role.impl;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,16 @@ public class RoleServiceImpl implements RoleService {
 			}
 		}
 		throw new AccessDeniedException("无权执行该操作");
+	}
+
+	@Override
+	public List<Role> query(Map<String, Object> params) {
+		return roleDao.query(params);
+	}
+
+	@Override
+	public int count(Map<String, Object> params) {
+		return roleDao.count(params);
 	}
 	
 	

@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
@@ -23,8 +22,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bugbycode.module.employee.Employee;
+import com.bugbycode.module.organization.Organization;
 import com.bugbycode.service.employee.EmployeeService;
-import com.bugbycode.service.role.RoleService;
+import com.bugbycode.service.organization.OrganizationService;
 import com.util.AESUtil;
 import com.util.StringUtil;
 
@@ -37,7 +37,7 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	
 	@Autowired
-	private RoleService roleService;
+	private OrganizationService organizationService;
 	
 	@RequestMapping(method = {RequestMethod.POST},value = "/insert")
 	public Map<String, ?> insert(@RequestBody @Validated Employee emp){
@@ -118,7 +118,15 @@ public class EmployeeController {
 			String keyWord,
 			int offset,
 			int limit){
-		roleService.checkRole(organizationId, "ROLE_USER_QUERY");
+		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Employee emp = employeeService.queryByUserName(username);
+		if(emp == null) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
+		Organization ou = organizationService.queryById(organizationId);
+		if(ou == null || emp.getId() != ou.getCreateUserId()) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
 		Map<String,Object> params = new HashMap<String,Object>();
 		if(StringUtil.isNotEmpty(keyWord)) {
 			params.put("keyword", keyWord);
@@ -135,7 +143,15 @@ public class EmployeeController {
 			@Max(value = Integer.MAX_VALUE,message = ("组织机构ID不能超过" + Integer.MAX_VALUE))
 			int organizationId,
 			String keyWord){
-		roleService.checkRole(organizationId, "ROLE_USER_QUERY");
+		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Employee emp = employeeService.queryByUserName(username);
+		if(emp == null) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
+		Organization ou = organizationService.queryById(organizationId);
+		if(ou == null || emp.getId() != ou.getCreateUserId()) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
 		Map<String,Integer> result = new HashMap<String,Integer>();
 		Map<String,Object> params = new HashMap<String,Object>();
 		if(StringUtil.isNotEmpty(keyWord)) {
