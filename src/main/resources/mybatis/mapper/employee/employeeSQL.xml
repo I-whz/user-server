@@ -7,6 +7,7 @@
 		<result property="id" 				column="id"/>
 		<result property="name" 			column="name"/>
 		<result property="username" 		column="username"/>
+		<result property="tel" 				column="tel"/>
 		<result property="password" 		column="password"/>
 		<result property="email" 			column="email"/>
 		<result property="status" 			column="status"/>
@@ -24,6 +25,7 @@
 			  `name`,
 			  `username`,
 			  `password`,
+			  `tel`,
 			  `email`,
 			  `status`,
 			  `address`,
@@ -42,6 +44,7 @@
              `name`,
              `username`,
              `password`,
+             `tel`,
              `email`,
              `status`,
              `address`,
@@ -51,6 +54,7 @@
 			VALUES (#{name},
 			        #{username},
 			        #{password},
+			        #{tel},
 			        #{email},
 			        #{status},
 			        #{address},
@@ -71,6 +75,7 @@
 			SET 
 			  `name` = #{name},
 			  `password` = #{password},
+			  `tel` = #{tel},
 			  `email` = #{email},
 			  `status` = #{status},
 			  `address` = #{address},
@@ -88,6 +93,7 @@
 			  e.`name`,
 			  e.`username`,
 			  e.`password`,
+			  e.`tel`,
 			  e.`email`,
 			  e.`status`,
 			  e.`address`,
