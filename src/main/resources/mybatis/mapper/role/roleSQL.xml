@@ -56,4 +56,104 @@
 			DELETE FROM `rel_employee_organization_role` WHERE `ou_id` = #{organizationId}
 		]]>
 	</delete>
+	<delete id="deleteByOuId" parameterType="int">
+		<![CDATA[
+			DELETE FROM `role` WHERE `organization_id` = #{organizationId}
+		]]>
+	</delete>
+	<select id="queryById" parameterType="int" resultMap="roleResult">
+		<![CDATA[
+			SELECT
+			  r.`id`,
+			  r.`name`,
+			  r.`description`,
+			  r.`granted_authority`,
+			  r.`type`,
+			  r.`organization_id`,
+			  r.`create_time`,
+			  r.`update_time`
+			FROM `role` r WHERE r.`id` = #{id}
+		]]>
+	</select>
+	<select id="query" parameterType="java.util.HashMap" resultMap="roleResult">
+		<![CDATA[
+			SELECT
+			  r.`id`,
+			  r.`name`,
+			  r.`description`,
+			  r.`granted_authority`,
+			  r.`type`,
+			  r.`organization_id`,
+			  r.`create_time`,
+			  r.`update_time`
+			FROM `role` r WHERE r.`organization_id` = #{ouId}
+		]]>
+		<if test="keyword!=null and keyword!=''">
+			<![CDATA[
+				AND (r.`name` LIKE CONCAT('%',#{keyword},'%')
+					OR r.`description` LIKE CONCAT('%',#{keyword},'%')
+				)
+			]]>
+		</if>
+		<if test="offset!=null and offset!=''">
+			<![CDATA[
+				LIMIT #{offset},#{limit}
+			]]>
+		</if>
+	</select>
+	<select id="count" parameterType="java.util.HashMap" resultType="int">
+		<![CDATA[
+			SELECT COUNT(*) FROM `role` r WHERE r.`organization_id` = #{ouId}
+		]]>
+		<if test="keyword!=null and keyword!=''">
+			<![CDATA[
+				AND (r.`name` LIKE CONCAT('%',#{keyword},'%')
+					OR r.`description` LIKE CONCAT('%',#{keyword},'%')
+				)
+			]]>
+		</if>
+	</select>
+	<insert id="insert" parameterType="role">
+		<![CDATA[
+			INSERT INTO `role` (
+			  `name`,
+			  `description`,
+			  `granted_authority`,
+			  `type`,
+			  `create_time`,
+			  `organization_id`
+			) 
+			VALUES
+			  (
+			    #{name},
+			    #{description},
+			    #{grantedAuthority},
+			    #{type},
+			    #{createTime},
+			    #{organizationId}
+			  ) 
+		]]>
+		<selectKey keyProperty="id" resultType="java.lang.Integer">
+			<![CDATA[
+				SELECT @@IDENTITY AS id
+			]]>
+		</selectKey>
+	</insert>
+	<update id="update" parameterType="role">
+		<![CDATA[
+			UPDATE 
+			  `role` 
+			SET
+			  `name` = #{name},
+			  `description` = #{description},
+			  `granted_authority` = #{grantedAuthority},
+			  `update_time` = #{updateTime}
+			WHERE `id` = #{id}
+		]]>
+	</update>
+	<delete id="deleteById"  parameterType="int">
+		<![CDATA[
+			DELETE FROM `role` WHERE `id` = #{id}
+		]]>
+	</delete>
 </mapper>

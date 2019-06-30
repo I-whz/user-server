@@ -62,6 +62,7 @@ public class OrganizationServiceImpl implements OrganizationService{
 	@Override
 	public void delete(int organizationId) {
 		roleDao.deleteOuRelByOuId(organizationId);
+		roleDao.deleteByOuId(organizationId);
 		organizationDao.delete(organizationId);
 	}
 
