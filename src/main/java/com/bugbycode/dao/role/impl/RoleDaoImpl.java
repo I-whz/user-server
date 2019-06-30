@@ -76,4 +76,9 @@ public class RoleDaoImpl extends BaseDao implements RoleDao {
 		getSqlSession().delete("role.deleteById", roleId);
 	}
 
+	@Override
+	public Role queryByName(Map<String, Object> params) {
+		return getSqlSession().selectOne("role.queryByName", params);
+	}
+
 }

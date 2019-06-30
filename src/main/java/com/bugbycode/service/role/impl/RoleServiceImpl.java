@@ -65,7 +65,30 @@ public class RoleServiceImpl implements RoleService {
 	public int count(Map<String, Object> params) {
 		return roleDao.count(params);
 	}
-	
-	
+
+	@Override
+	public int insert(Role r) {
+		return roleDao.insert(r);
+	}
+
+	@Override
+	public void update(Role r) {
+		roleDao.update(r);
+	}
+
+	@Override
+	public void deleteById(int roleId) {
+		roleDao.deleteById(roleId);
+	}
+
+	@Override
+	public Role queryById(int roleId) {
+		return roleDao.queryById(roleId);
+	}
+
+	@Override
+	public Role queryByName(Map<String, Object> params) {
+		return roleDao.queryByName(params);
+	}
 
 }

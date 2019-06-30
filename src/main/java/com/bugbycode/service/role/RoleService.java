@@ -14,4 +14,14 @@ public interface RoleService {
 	public List<Role> query(Map<String,Object> params);
 	
 	public int count(Map<String,Object> params);
+	
+	public int insert(Role r);
+	
+	public void update(Role r);
+	
+	public void deleteById(int roleId);
+	
+	public Role queryById(int roleId);
+	
+	public Role queryByName(Map<String,Object> params);
 }

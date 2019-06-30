@@ -156,4 +156,18 @@
 			DELETE FROM `role` WHERE `id` = #{id}
 		]]>
 	</delete>
+	<select id="queryByName" parameterType="java.util.HashMap" resultMap="roleResult">
+		<![CDATA[
+			SELECT 
+			  `id`,
+			  `name`,
+			  `description`,
+			  `granted_authority`,
+			  `type`,
+			  `create_time`,
+			  `update_time`,
+			  `organization_id` 
+			FROM `role` WHERE `name` = #{roleName} AND `organization_id` = #{ouId} LIMIT 1
+		]]>
+	</select>
 </mapper>

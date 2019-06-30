@@ -33,9 +33,13 @@ public class AuthResourceConfig extends ResourceServerConfigurerAdapter {
 		http.authorizeRequests()
 		.antMatchers("/employee/update","/employee/info",
 				"/employee/query","/employee/count",
+				"/employee/queryByUserName/*",
 				"/organization/insert","/organization/query",
 				"/organization/count","/organization/update",
-				"/organization/delete").hasRole("LOGIN")
+				"/organization/delete","/role/query",
+				"/role/insert","/role/count",
+				"/role/update","/role/delete","/role/queryById","/role/queryById/*",
+				"/role/queryByName").hasRole("LOGIN")
 		
 		.antMatchers("/employee/insert","/employee/queryByUserName").hasRole("CALL_API");
 	}
