@@ -51,4 +51,9 @@
 			DELETE FROM `rel_employee_organization_role` WHERE `role_id` = #{roleId}
 		]]>
 	</delete>
+	<delete id="deleteOuRelByOuId" parameterType="int">
+		<![CDATA[
+			DELETE FROM `rel_employee_organization_role` WHERE `ou_id` = #{organizationId}
+		]]>
+	</delete>
 </mapper>

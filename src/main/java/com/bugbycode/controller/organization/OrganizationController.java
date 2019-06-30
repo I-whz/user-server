@@ -77,4 +77,44 @@ public class OrganizationController {
 		result.put("count", organizationService.count(params));
 		return result;
 	}
+	
+	@RequestMapping(method = {RequestMethod.POST},value = "/delete")
+	public Map<String, ?> delete(int organizationId){
+		Map<String,Object> result = new HashMap<String,Object>();
+		String error = "success";
+		String error_description = "删除组织机构成功";
+		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Employee emp = employeeService.queryByUserName(username);
+		if(emp == null) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
+		Organization ou = organizationService.queryById(organizationId);
+		if(ou == null || emp.getId() != ou.getCreateUserId()) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
+		organizationService.delete(organizationId);
+		result.put("error", error);
+		result.put("error_description", error_description);
+		return result;
+	}
+	
+	@RequestMapping(method = {RequestMethod.POST},value = "/update")
+	public Map<String, ?> update(@RequestBody @Validated Organization ou){
+		Map<String,Object> result = new HashMap<String,Object>();
+		String error = "success";
+		String error_description = "修改组织机构成功";
+		String username = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+		Employee emp = employeeService.queryByUserName(username);
+		if(emp == null) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
+		Organization backou = organizationService.queryById(ou.getId());
+		if(backou == null || emp.getId() != backou.getCreateUserId()) {
+			throw new AccessDeniedException("无权执行该操作");
+		}
+		organizationService.update(ou);
+		result.put("error", error);
+		result.put("error_description", error_description);
+		return result;
+	}
 }

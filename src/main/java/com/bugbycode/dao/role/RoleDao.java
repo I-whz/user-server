@@ -14,4 +14,6 @@ public interface RoleDao {
 	public void exitOu(Map<String,Object> params);
 	
 	public void deleteOuRelByRole(int roleId);
+	
+	public void deleteOuRelByOuId(int organizationId);
 }
