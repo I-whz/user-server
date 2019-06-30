@@ -54,7 +54,7 @@
 	</update>
 	<delete id="delete" parameterType="int">
 		<![CDATA[
-			DELETE `organization` WHERE `id` = #{id}
+			DELETE FROM `organization` WHERE `id` = #{id}
 		]]>
 	</delete>
 	<select id="query" parameterType="java.util.HashMap" resultMap="ouResult">
